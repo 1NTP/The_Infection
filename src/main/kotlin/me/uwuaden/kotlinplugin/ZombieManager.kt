@@ -44,6 +44,7 @@ object ZombieManager {
                     player.addPotionEffect(PotionEffect(PotionEffectType.REGENERATION, 20*10, 3, false, true))
                     player.addPotionEffect(PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20*10, 1, false, true))
                     player.addPotionEffect(PotionEffect(PotionEffectType.SPEED, 20*10, 1, false, true))
+                    player.addPotionEffect(PotionEffect(PotionEffectType.DOLPHINS_GRACE, 20*10, 0, false, true))
                     player.addPotionEffect(PotionEffect(PotionEffectType.NIGHT_VISION, 20*20, 0, false, true))
                 }
             }
