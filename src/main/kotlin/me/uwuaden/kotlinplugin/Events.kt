@@ -98,6 +98,7 @@ class Events: Listener {
             world.setSpawnLocation(0, 0, 0)
             world.worldBorder.center = Location(world, 0.0, 0.0, 0.0)
             world.worldBorder.setSize(1000.0, 5)
+            world.difficulty = Difficulty.HARD
         }
     }
 
