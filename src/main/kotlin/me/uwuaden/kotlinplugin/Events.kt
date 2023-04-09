@@ -1,5 +1,6 @@
 package me.uwuaden.kotlinplugin
 
+import me.uwuaden.kotlinplugin.Main.Companion.plugin
 import org.bukkit.*
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Player
@@ -14,6 +15,7 @@ import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.event.player.PlayerItemConsumeEvent
 import org.bukkit.event.player.PlayerMoveEvent
+import org.bukkit.event.server.PluginEnableEvent
 import org.bukkit.event.world.WorldLoadEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
@@ -89,12 +91,14 @@ class Events: Listener {
     }
 
     @EventHandler
-    fun onWorldLoad(e: WorldLoadEvent) {
-        e.world.setGameRule(GameRule.SPAWN_RADIUS, 5000)
-        e.world.setGameRule(GameRule.NATURAL_REGENERATION, false)
-        e.world.setSpawnLocation(0, 0, 0)
-        e.world.worldBorder.center = Location(e.world, 0.0, 0.0, 0.0)
-        e.world.worldBorder.setSize(1000.0, 5)
+    fun onWorldLoad(e: PluginEnableEvent) {
+        plugin.server.worlds.forEach { world ->
+            world.setGameRule(GameRule.SPAWN_RADIUS, 5000)
+            world.setGameRule(GameRule.NATURAL_REGENERATION, false)
+            world.setSpawnLocation(0, 0, 0)
+            world.worldBorder.center = Location(world, 0.0, 0.0, 0.0)
+            world.worldBorder.setSize(1000.0, 5)
+        }
     }
 
     @EventHandler
