@@ -2,6 +2,7 @@ package me.uwuaden.kotlinplugin
 
 import me.uwuaden.kotlinplugin.Main.Companion.plugin
 import org.bukkit.*
+import org.bukkit.block.data.type.Leaves
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Player
 import org.bukkit.entity.Projectile
@@ -134,6 +135,13 @@ class Events: Listener {
                 in 36..40 -> {
                     e.block.world.dropItem(e.block.location, ItemStack(Material.COAL))
                     e.block.world.dropItem(e.block.location, ItemStack(Material.COBBLESTONE))
+                    e.isDropItems = false
+                }
+            }
+        } else if(e.block.blockData is Leaves) {
+            when ((1..100).random()) {
+                in 1..30 -> {
+                    e.block.world.dropItem(e.block.location, ItemStack(Material.APPLE))
                     e.isDropItems = false
                 }
             }
