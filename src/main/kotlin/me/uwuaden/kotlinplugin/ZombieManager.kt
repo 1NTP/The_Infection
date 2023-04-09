@@ -3,7 +3,10 @@ package me.uwuaden.kotlinplugin
 import me.uwuaden.kotlinplugin.Main.Companion.plugin
 import me.uwuaden.kotlinplugin.Main.Companion.scheduler
 import me.uwuaden.kotlinplugin.Main.Companion.zombies
+import org.bukkit.ChatColor
+import org.bukkit.Color
 import org.bukkit.Particle
+import org.bukkit.Particle.DustOptions
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Player
 import org.bukkit.potion.PotionEffect
@@ -48,9 +51,17 @@ object ZombieManager {
             plugin.server.worlds.forEach { w->
                 w.entities.forEach { e->
                     if(e is Arrow && e.scoreboardTags.contains("TI_CureShot")) {
-                        if (!e.isOnGround) w.spawnParticle(Particle.CLOUD, e.location, 3)
+                        if (!e.isOnGround) w.spawnParticle(Particle.CLOUD, e.location, 3, 0.0, 0.0, 0.0, 0.0)
                     }
                 }
+            }
+
+            plugin.server.onlinePlayers.forEach { player ->
+                if (
+                    player.hasPotionEffect(PotionEffectType.SLOW)
+                    && player.hasPotionEffect(PotionEffectType.BLINDNESS)
+                    && player.hasPotionEffect(PotionEffectType.WEAKNESS)
+                ) player.sendActionBar("${ChatColor.RED}높은 대미지를 받아 스턴에 걸렸습니다.")
             }
         }, 0, 2)
     }

@@ -13,6 +13,7 @@ import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.event.player.PlayerItemConsumeEvent
+import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.world.WorldLoadEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
@@ -31,21 +32,26 @@ class Events: Listener {
     fun onDamage(e: EntityDamageEvent) {
         if (e.entity !is Player) return
         val victim = e.entity as Player
-        e.isCancelled = true
-        val originalHP = victim.health
-        e.isCancelled = false
-        val currentHP = victim.health
-
-        if (abs(originalHP - currentHP) >= 3.0) {
+        if (e.finalDamage >= 6.0) {
             victim.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 20*5, 4, false, true))
             victim.addPotionEffect(PotionEffect(PotionEffectType.WEAKNESS, 20*5, 9, false, true))
             victim.addPotionEffect(PotionEffect(PotionEffectType.BLINDNESS, 20*5, 0, false, true))
         }
     }
+
+    @EventHandler
+    fun onMove(e: PlayerMoveEvent) {
+        if (
+        e.player.hasPotionEffect(PotionEffectType.SLOW)
+        && e.player.hasPotionEffect(PotionEffectType.BLINDNESS)
+        && e.player.hasPotionEffect(PotionEffectType.WEAKNESS)
+        ) e.isCancelled = true
+
+    }
     @EventHandler
     fun onDamage(e: EntityDamageByEntityEvent) {
-        if(e.entity !is Player) return
-        val player = e.entity as Player
+        if(e.damager !is Player) return
+        val player = e.damager as Player
         if (ZombieManager.isZombie(player)) {
             e.damage = e.damage*1.5
         }
@@ -53,8 +59,10 @@ class Events: Listener {
     @EventHandler
     fun onShoot(e: ProjectileLaunchEvent) {
         val shooter = e.entity.shooter ?: return
+
         if(e.entity !is Arrow) return
         if (shooter !is Player) return
+        if(ZombieManager.isZombie(shooter)) return
         if (shooter.inventory.itemInOffHand.type != Material.DIAMOND) return
 
         shooter.inventory.itemInOffHand.amount -= 1
