@@ -63,11 +63,11 @@ class Main: JavaPlugin() {
                         if(getNearestPlayer(player) != null) {
                             val np = getNearestPlayer(player)!!
                             player.sendMessage("${ChatColor.GREEN}가장 가까이 있는 플레이어:")
-                            player.sendMessage("${ChatColor.GREEN}${np.name}, X: ${np.location.x.toInt()}, Y: ${np.location.x.toInt()}, Z: ${np.location.x.toInt()} ${ChatColor.GRAY}(${np.location.distance(player.location)})")
+                            player.sendMessage("${ChatColor.GREEN}${np.name}, X: ${np.location.x.toInt()}, Y: ${np.location.y.toInt()}, Z: ${np.location.z.toInt()} ${ChatColor.GRAY}(${np.location.distance(player.location)})")
                             player.sendMessage(" ")
 
                             val list = plugin.server.onlinePlayers
-                            list.removeIf { ZombieManager.isZombie(it) }
+                            list.filter { !ZombieManager.isZombie(it) }
 
                             player.sendMessage("${ChatColor.GREEN}남은 플레이어 수: ${list.size}")
                         }
